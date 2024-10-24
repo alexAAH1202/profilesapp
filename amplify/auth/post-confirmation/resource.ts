@@ -2,6 +2,8 @@ import { defineFunction } from '@aws-amplify/backend';
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { defineAuth } from '@aws-amplify/backend-auth';
 import { Amplify } from 'aws-amplify';
+import { generateClient } from 'aws-amplify/api';
+import { APIGraphQLConfig } from '@aws-amplify/api-graphql';
 
 // Define the postConfirmation function
 export const postConfirmation = defineFunction({
@@ -37,12 +39,14 @@ export const data = defineData({
 });
 
 // Configure Amplify
+const apiConfig: APIGraphQLConfig = {
+  endpoint: process.env.API_PROFILESAPP_GRAPHQLAPIENDPOINTOUTPUT || '',
+  region: process.env.AWS_REGION,
+  defaultAuthMode: 'userPool',
+};
+
 Amplify.configure({
   API: {
-    GraphQL: {
-      endpoint: process.env.AMPLIFY_DATA_GRAPHQL_ENDPOINT,
-      region: process.env.AWS_REGION,
-      defaultAuthMode: 'userPool',
-    },
+    GraphQL: apiConfig,
   },
 });

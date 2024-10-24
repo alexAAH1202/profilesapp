@@ -1,5 +1,6 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { postConfirmation } from "../auth/post-confirmation/resource";
+// import { ResourceProvider } from '@aws-amplify/backend-provider';
 
 const schema = a
   .schema({
@@ -56,6 +57,13 @@ Fetch records from the database and use them in your frontend component.
 
 export const handler = async (event: any) => {
   // ... existing code ...
+
+  // Comment out or remove the ResourceProvider instantiation
+  // const resourceProvider = new ResourceProvider({
+  //   // Add necessary configuration here
+  // });
+
+  // Use resourceProvider as needed
 
   // Wherever postConfirmation is used, it should now be recognized
   // For example:
