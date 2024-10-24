@@ -1,45 +1,45 @@
 import { defineFunction } from '@aws-amplify/backend';
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { defineAuth } from '@aws-amplify/backend-auth';
-import { postConfirmation } from './post-confirmation/resource';
+import { Schema } from '@aws-amplify/graphql-api-construct';
 
 // Define the postConfirmation function
 export const postConfirmation = defineFunction({
   name: 'post-confirmation',
+  // Add any necessary configuration here
 });
 
 export const auth = defineAuth({
   loginWith: {
     email: true,
+    // Add any other login methods you want to support
   },
   triggers: {
     postConfirmation
   }
 });
 
-// Define the schema and authorization logic
-const schema = a
-  .schema({
-    UserProfile: a
-      .model({
-        email: a.string(),
-        profileOwner: a.string(),
-      })
-      .authorization((allow) => [
-        allow.ownerDefinedIn("profileOwner"),
-      ]),
+// Define your data schema
+export const schema = a.schema({
+  UserProfile: a.model({
+    email: a.string(),
+    profileOwner: a.string(),
+    // Add other fields as needed
   })
-  .authorization((allow) => [allow.resource(postConfirmation)]);
+});
 
-export type Schema = ClientSchema<typeof schema>;
-
-// Define the data model with authorization modes
+// Define your data
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: "apiKey",
-    apiKeyAuthorizationMode: {
-      expiresInDays: 30,
-    },
-  },
+    defaultAuthorizationMode: 'userPool'
+  }
+});
+
+// Define your API
+export const api = new Schema({
+  schema: schema,
+  authorizationModes: {
+    defaultAuthorizationMode: 'userPool'
+  }
 });
