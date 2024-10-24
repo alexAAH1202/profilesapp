@@ -1,7 +1,7 @@
 import { defineFunction } from '@aws-amplify/backend';
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { defineAuth } from '@aws-amplify/backend-auth';
-import { Schema } from '@aws-amplify/graphql-api-construct';
+import { Amplify } from 'aws-amplify';
 
 // Define the postConfirmation function
 export const postConfirmation = defineFunction({
@@ -20,7 +20,7 @@ export const auth = defineAuth({
 });
 
 // Define your data schema
-export const schema = a.schema({
+const schema = a.schema({
   UserProfile: a.model({
     email: a.string(),
     profileOwner: a.string(),
@@ -36,10 +36,13 @@ export const data = defineData({
   }
 });
 
-// Define your API
-export const api = new Schema({
-  schema: schema,
-  authorizationModes: {
-    defaultAuthorizationMode: 'userPool'
-  }
+// Configure Amplify
+Amplify.configure({
+  API: {
+    GraphQL: {
+      endpoint: process.env.AMPLIFY_DATA_GRAPHQL_ENDPOINT,
+      region: process.env.AWS_REGION,
+      defaultAuthMode: 'userPool',
+    },
+  },
 });
