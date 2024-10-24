@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { postConfirmation } from "../auth/post-confirmation/resource";
 
 const schema = a
   .schema({
@@ -52,3 +53,13 @@ Fetch records from the database and use them in your frontend component.
 // const { data: todos } = await client.models.Todo.list()
 
 // return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
+
+export const handler = async (event: any) => {
+  // ... existing code ...
+
+  // Wherever postConfirmation is used, it should now be recognized
+  // For example:
+  const result = await postConfirmation(event);
+
+  // ... rest of your code ...
+};
