@@ -1,8 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from "react";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { useState, useEffect } from "react";
 import {
   Button,
   Heading,
@@ -16,6 +15,7 @@ import { Amplify } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
 import { generateClient } from "aws-amplify/data";
 import outputs from "../amplify_outputs.json";
+
 /**
  * @type {import('aws-amplify/data').Client<import('../amplify/data/resource').Schema>}
  */
@@ -28,6 +28,7 @@ const client = generateClient({
 export default function App() {
   const [userprofiles, setUserProfiles] = useState([]);
   const { signOut } = useAuthenticator((context) => [context.user]);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     fetchUserProfile();
@@ -77,15 +78,8 @@ export default function App() {
         ))}
       </Grid>
       <Button onClick={signOut}>Sign Out</Button>
-    </Flex>
-  );
-}
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
+      {/* Vite + React content */}
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -106,8 +100,6 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-    </>
-  )
+    </Flex>
+  );
 }
-
-export default App
