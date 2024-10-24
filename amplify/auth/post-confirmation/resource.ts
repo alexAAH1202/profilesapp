@@ -1,9 +1,20 @@
 import { defineFunction } from '@aws-amplify/backend';
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { defineAuth } from '@aws-amplify/backend-auth';
+import { postConfirmation } from './post-confirmation/resource';
 
 // Define the postConfirmation function
 export const postConfirmation = defineFunction({
   name: 'post-confirmation',
+});
+
+export const auth = defineAuth({
+  loginWith: {
+    email: true,
+  },
+  triggers: {
+    postConfirmation
+  }
 });
 
 // Define the schema and authorization logic
